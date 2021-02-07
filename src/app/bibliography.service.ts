@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Bibliography} from './bibliography';
+import {BibliographicRecord} from './bibliographic-record';
 import {environment} from '../environments/environment';
 
 @Injectable({
@@ -8,14 +8,15 @@ import {environment} from '../environments/environment';
 })
 export class BibliographyService {
 
-    constructor( private httpClient: HttpClient ) { }
+    constructor( private httpClient: HttpClient ) {
+    }
 
     /** Get a number of bibliography entries */
-    fetchBibliography( count: number, callback: (data: Bibliography) => void ): void {
+    fetchBibliography( count: number, callback: (data: BibliographicRecord[]) => void ): void {
         const url = environment.bibliographyServerUrl + '/bibliography/' + count;
         this.httpClient.get( url )
             .toPromise()
-            .then( data => callback( data as Bibliography ))
+            .then( data => callback( data as BibliographicRecord[] ))
             .catch( error => console.error( JSON.stringify( error )));
     }
 }

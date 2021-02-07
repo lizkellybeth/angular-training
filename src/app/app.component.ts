@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { BibliographyService} from './bibliography.service';
-import { Bibliography } from './bibliography';
+import { BibliographicRecord } from './bibliographic-record';
 
 @Component({
     selector: 'app-root',
@@ -15,7 +15,7 @@ export class AppComponent {
         bibliographyService.fetchBibliography( 3, this.getBibliographyCallback() );
     }
 
-    private getBibliographyCallback(): (bibliography: Bibliography) => void {
+    private getBibliographyCallback(): (bibliography: BibliographicRecord[]) => void {
         return (bibliography) => {
             this.bibliography = JSON.stringify(bibliography, undefined, 4);
         };

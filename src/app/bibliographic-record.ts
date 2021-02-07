@@ -1,4 +1,4 @@
-export interface Bibliography {
+export interface BibliographicRecord {
     bibcode: string;
     abstract_: string;
     authors: string;
