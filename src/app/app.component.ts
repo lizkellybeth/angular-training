@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BibliographyService} from './bibliography.service';
 import { BibliographicRecord } from './bibliographic-record';
 
@@ -7,12 +7,15 @@ import { BibliographicRecord } from './bibliographic-record';
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
-    bibliography: any;
+    bibliography: string;
 
     constructor( private bibliographyService: BibliographyService ) {
-        bibliographyService.fetchBibliography( 3, this.getBibliographyCallback() );
+    }
+
+    ngOnInit(): void {
+        this.bibliographyService.fetchBibliography( 3, this.getBibliographyCallback() );
     }
 
     private getBibliographyCallback(): (bibliography: BibliographicRecord[]) => void {

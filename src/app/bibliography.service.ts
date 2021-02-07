@@ -11,7 +11,7 @@ export class BibliographyService {
     constructor( private httpClient: HttpClient ) {
     }
 
-    /** Get a number of bibliography entries */
+    /** Get a number of bibliographic records, pass them to a callback */
     fetchBibliography( count: number, callback: (data: BibliographicRecord[]) => void ): void {
         const url = environment.bibliographyServerUrl + '/bibliography/' + count;
         this.httpClient.get( url )
