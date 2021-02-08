@@ -12,11 +12,16 @@ export class BibliographyService {
     }
 
     /** Get a number of bibliographic records, pass them to a callback */
-    fetchBibliography( count: number, callback: (data: BibliographicRecord[]) => void ): void {
+    fetchBibliography( count: any,
+                       callback: (data: BibliographicRecord[]) => void,
+                       errorCallback?: (x) => void ): void {
         const url = environment.bibliographyServerUrl + '/bibliography/' + count;
-        this.httpClient.get<BibliographicRecord[]>( url )
+        this.httpClient.get<BibliographicRecord[]>(url)
             .toPromise()
-            .then( data => callback( data ))
-            .catch( error => console.error( JSON.stringify( error )));
+            .then(data => callback(data))
+            .catch(error =>
+                    errorCallback
+                        ? errorCallback(error)
+                        : console.error(JSON.stringify(error)));
     }
 }
