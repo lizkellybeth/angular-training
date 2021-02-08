@@ -19,17 +19,17 @@ export class AppComponent implements OnInit {
     proposalTable: string;
     errorMessage: string;
 
-    private static getMeaningfulMessage(error): string {
+    static getMeaningfulMessage(error): string {
         return `${error.error.error} (${error.error.status}): ${error.error.message}`;
     }
 
     // Simple callback for putting up an alert message
-    private static alertErrorCallback( error ): void {
+    static alertErrorCallback( error ): void {
         alert( AppComponent.getMeaningfulMessage( error ));
     }
 
     ngOnInit(): void {
-        // Call the bibliography service three times with an invalid parameter to trigger an error response,
+        // Call the bibliography service three times with an invalid parameter (to trigger an error response),
         // passing (a) no error callback, (b) the alert callback and (c) the display error callback
         this.bibliographyService.fetchBibliography( 'a', this.getBibliographyCallback() );
         this.bibliographyService.fetchBibliography( 'a', this.getBibliographyCallback(), AppComponent.alertErrorCallback );
@@ -38,7 +38,7 @@ export class AppComponent implements OnInit {
         this.proposalService.fetchBProposals( '2018.A', this.getProposalsCallback() );
     }
 
-// Closure callback to display the error message in the browser
+    // Closure callback to display the error message in the browser
     private getDisplayErrorCallback(): (x) => void {
         return (error) => {
             this.errorMessage = AppComponent.getMeaningfulMessage( error );
