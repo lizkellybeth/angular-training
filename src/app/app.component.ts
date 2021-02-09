@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GitHubOrganizationService} from './git-hub-organization.service';
+import { GitHubOrganizationsService } from './git-hub-organizations.service';
 import { GitHubOrganization } from './git-hub-organization';
 
 @Component({
@@ -11,16 +11,16 @@ export class AppComponent implements OnInit {
 
     gitHubOrganizations: string;
 
-    constructor( private gitHubOrganizationService: GitHubOrganizationService ) {
+    constructor( private gitHubOrganizationsService: GitHubOrganizationsService ) {
     }
 
     ngOnInit(): void {
-        this.gitHubOrganizationService.fetchOrganizations( 3, this.getOrganizationsCallback() );
+        this.gitHubOrganizationsService.fetchOrganizations( 3, this.organizationsCallbackClosure() );
     }
 
-    private getOrganizationsCallback(): (array: GitHubOrganization[]) => void {
-        return (organizationArray) => {
-            this.gitHubOrganizations = JSON.stringify(organizationArray, undefined, 4);
+    private organizationsCallbackClosure(): (organizations: GitHubOrganization[]) => void {
+        return (organizations) => {
+            this.gitHubOrganizations = JSON.stringify(organizations, undefined, 4);
         };
     }
 }

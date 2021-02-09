@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {GitHubOrganization} from './git-hub-organization';
-import {environment} from '../environments/environment';
+import {environment} from '../environments/environment.prod';
 
 @Injectable({
     providedIn: 'root'
 })
-export class GitHubOrganizationService {
+export class GitHubOrganizationsService {
 
     constructor( private httpClient: HttpClient ) {
     }
@@ -15,7 +15,7 @@ export class GitHubOrganizationService {
         const url = environment.gitHubApiUrl + '/organizations?per_page=' + count;
         this.httpClient.get<GitHubOrganization[]>( url )
             .toPromise()
-            .then( data => callback( data ))
+            .then(  data  => callback( data ))
             .catch( error => console.error( JSON.stringify( error )));
     }
 }
