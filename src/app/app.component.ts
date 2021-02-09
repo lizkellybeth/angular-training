@@ -13,13 +13,38 @@ export class AppComponent implements OnInit {
 
     gitHubOrganizations: string;
     gitHubUsers: string;
+    errorMessage: string;
+
+    static getMeaningfulMessage(error): string {
+        return `${error.statusText} (${error.status}): ${error.message}`;
+    }
+
+    // Simple callback for putting up an alert message
+    static alertErrorCallback( error ): void {
+        alert( AppComponent.getMeaningfulMessage( error ));
+    }
+
+    // Closure callback to display the error message in the browser
+    private getDisplayErrorCallback(): (x) => void {
+        return (error) => {
+            this.errorMessage = AppComponent.getMeaningfulMessage( error );
+        };
+    }
 
     constructor( private gitHubOrganizationsService: GitHubOrganizationsService,
                  private gitHubUsersService: GitHubUsersService ) {
     }
 
     ngOnInit(): void {
-        this.gitHubOrganizationsService.fetchOrganizations( 3, this.organizationsCallbackClosure() );
+
+        const service = this.gitHubOrganizationsService;    // to avoid a 'line too long' lint warning
+
+        // Call the organizations service three times with an undefined count (to trigger an error response),
+        // passing (a) no error callback, (b) the alert callback and (c) the display error callback
+        service.fetchOrganizations( undefined, this.organizationsCallbackClosure() );
+        service.fetchOrganizations( undefined, this.organizationsCallbackClosure(), AppComponent.alertErrorCallback );
+        service.fetchOrganizations( undefined, this.organizationsCallbackClosure(), this.getDisplayErrorCallback() );
+
         this.gitHubUsersService.fetchUsers( 10, this.usersCallbackClosure() );
     }
 
