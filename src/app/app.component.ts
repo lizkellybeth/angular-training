@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {BibliographyService} from './bibliography.service';
-import {BibliographicRecord} from './bibliographic-record';
-import {ProposalsService} from './proposals.service';
-import {Proposal} from './proposal';
+import { Component, OnInit } from '@angular/core';
+import { GitHubOrganizationsService } from './git-hub-organizations.service';
+import { GitHubOrganization } from './git-hub-organization';
+import { GitHubUsersService } from './git-hub-users.service';
+import { GitHubUser } from './git-hub-user';
 
 @Component({
     selector: 'app-root',
@@ -11,53 +11,30 @@ import {Proposal} from './proposal';
 })
 export class AppComponent implements OnInit {
 
-    constructor( private bibliographyService: BibliographyService,
-                 private proposalService: ProposalsService ) {
-    }
+    gitHubOrganizations: string;
+    gitHubUsers: string;
 
-    bibliography: string;
-    proposalTable: string;
-    errorMessage: string;
-
-    static getMeaningfulMessage(error): string {
-        return `${error.error.error} (${error.error.status}): ${error.error.message}`;
-    }
-
-    // Simple callback for putting up an alert message
-    static alertErrorCallback( error ): void {
-        alert( AppComponent.getMeaningfulMessage( error ));
+    constructor( private gitHubOrganizationsService: GitHubOrganizationsService,
+                 private gitHubUsersService: GitHubUsersService ) {
     }
 
     ngOnInit(): void {
-        // Call the bibliography service three times with an invalid parameter (to trigger an error response),
-        // passing (a) no error callback, (b) the alert callback and (c) the display error callback
-        this.bibliographyService.fetchBibliography( 'a', this.getBibliographyCallback() );
-        this.bibliographyService.fetchBibliography( 'a', this.getBibliographyCallback(), AppComponent.alertErrorCallback );
-        this.bibliographyService.fetchBibliography( 'a', this.getBibliographyCallback(), this.getDisplayErrorCallback() );
-
-        this.proposalService.fetchBProposals( '2018.A', this.getProposalsCallback() );
+        this.gitHubOrganizationsService.fetchOrganizations( 3, this.organizationsCallbackClosure() );
+        this.gitHubUsersService.fetchUsers( 10, this.usersCallbackClosure() );
     }
 
-    // Closure callback to display the error message in the browser
-    private getDisplayErrorCallback(): (x) => void {
-        return (error) => {
-            this.errorMessage = AppComponent.getMeaningfulMessage( error );
+    private organizationsCallbackClosure(): (organizations: GitHubOrganization[]) => void {
+        return (organizations) => {
+            this.gitHubOrganizations = JSON.stringify(organizations, undefined, 4);
         };
     }
 
-    private getBibliographyCallback(): (bibliography: BibliographicRecord[]) => void {
-        return (bibliography) => {
-            this.bibliography = JSON.stringify(bibliography, undefined, 4);
-        };
-    }
-
-    private getProposalsCallback(): (proposals: Proposal[]) => void {
-        return (proposals) => {
-            let proposalsTable = '';
-            proposals.forEach(proposal => {
-                proposalsTable += `${proposal.code.padEnd(15)} ${proposal.piName.padEnd(30)} ${proposal.title}\n`;
+    private usersCallbackClosure(): (users: GitHubUser[]) => void {
+        return (users) => {
+            this.gitHubUsers = '';
+            users.forEach( user => {
+                this.gitHubUsers += `${user.id.toString().padStart(6).padEnd(10)} ${user.login.padEnd(15)} ${user.type} ${user.site_admin}\n`;
             });
-            this.proposalTable = proposalsTable;
         };
     }
 }
