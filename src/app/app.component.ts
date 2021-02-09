@@ -15,12 +15,8 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.gitHubOrganizationsService.fetchOrganizations( 3, this.organizationsCallbackClosure() );
-    }
-
-    private organizationsCallbackClosure(): (organizations: GitHubOrganization[]) => void {
-        return (organizations) => {
-            this.gitHubOrganizations = JSON.stringify(organizations, undefined, 4);
-        };
+        this.gitHubOrganizationsService
+            .fetchOrganizations( 3 )
+            .then( organizations => this.gitHubOrganizations = JSON.stringify(organizations, undefined, 4));
     }
 }

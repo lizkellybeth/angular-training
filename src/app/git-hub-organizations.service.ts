@@ -11,11 +11,10 @@ export class GitHubOrganizationsService {
     constructor( private httpClient: HttpClient ) {
     }
 
-    fetchOrganizations( count: number, callback: (data: GitHubOrganization[]) => void ): void {
+    fetchOrganizations( count: number ): Promise< void | GitHubOrganization[] > {
         const url = environment.gitHubApiUrl + '/organizations?per_page=' + count;
-        this.httpClient.get<GitHubOrganization[]>( url )
+        return this.httpClient.get<GitHubOrganization[]>( url )
             .toPromise()
-            .then(  data  => callback( data ))
             .catch( error => console.error( JSON.stringify( error )));
     }
 }
