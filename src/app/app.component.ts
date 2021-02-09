@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { BibliographyService} from './bibliography.service';
-import { BibliographicRecord } from './bibliographic-record';
+import { GitHubOrganizationService} from './git-hub-organization.service';
+import { GitHubOrganization } from './git-hub-organization';
 
 @Component({
     selector: 'app-root',
@@ -9,18 +9,18 @@ import { BibliographicRecord } from './bibliographic-record';
 })
 export class AppComponent implements OnInit {
 
-    bibliography: string;
+    gitHubOrganizations: string;
 
-    constructor( private bibliographyService: BibliographyService ) {
+    constructor( private gitHubOrganizationService: GitHubOrganizationService ) {
     }
 
     ngOnInit(): void {
-        this.bibliographyService.fetchBibliography( 3, this.getBibliographyCallback() );
+        this.gitHubOrganizationService.fetchOrganizations( 3, this.getOrganizationsCallback() );
     }
 
-    private getBibliographyCallback(): (bibliography: BibliographicRecord[]) => void {
-        return (bibliography) => {
-            this.bibliography = JSON.stringify(bibliography, undefined, 4);
+    private getOrganizationsCallback(): (array: GitHubOrganization[]) => void {
+        return (organizationArray) => {
+            this.gitHubOrganizations = JSON.stringify(organizationArray, undefined, 4);
         };
     }
 }
