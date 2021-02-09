@@ -11,6 +11,10 @@ export class GitHubOrganizationsService {
     constructor( private httpClient: HttpClient ) {
     }
 
+    /**
+     * @return  A Promise containing an array of GitHubOrganization instances
+     *          if all went well, or nothing at all if the HTTP request failed with an error.
+     */
     fetchOrganizations( count: number ): Promise< void | GitHubOrganization[] > {
         const url = environment.gitHubApiUrl + '/organizations?per_page=' + count;
         return this.httpClient.get<GitHubOrganization[]>( url )
