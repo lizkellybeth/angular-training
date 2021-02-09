@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  bibliographyServerUrl: 'https://asa.alma.cl/sprs'
+  gitHubApiUrl: 'https://api.github.com'
 };
 
 /*
