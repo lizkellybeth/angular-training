@@ -8,17 +8,27 @@ import {environment} from '../environments/environment.prod';
 })
 export class GitHubOrganizationsService {
 
+    private organizationsUrl = environment.gitHubApiUrl + '/organizations-not-found?per_page=';
+
+    static errorHandler( error: any ): void {
+        console.error( '>>> Central error handling:', JSON.stringify( error ));
+    }
+
     constructor( private httpClient: HttpClient ) {
     }
 
     /**
+     * Perform an HTTP request to the 'organizations' endpoint of the GitHub API.
+     *
      * @return  A Promise containing an array of GitHubOrganization instances
-     *          if all went well, or nothing at all if the HTTP request failed with an error.
+     *          if all went well; or 'undefined' if the HTTP request failed
+     *          with an error.
      */
-    fetchOrganizations( count: number ): Promise< void | GitHubOrganization[] > {
-        const url = environment.gitHubApiUrl + '/organizations?per_page=' + count;
-        return this.httpClient.get<GitHubOrganization[]>( url )
-            .toPromise()
-            .catch( error => console.error( JSON.stringify( error )));
+    fetchOrganizations( count: number,
+                        catchErrors: boolean = true ): Promise< void | GitHubOrganization[] > {
+        const promise = this.httpClient.get<GitHubOrganization[]>( this.organizationsUrl + count ).toPromise();
+        return catchErrors
+            ? promise.catch( GitHubOrganizationsService.errorHandler )
+            : promise;
     }
 }

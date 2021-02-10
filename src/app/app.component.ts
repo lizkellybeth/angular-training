@@ -9,14 +9,32 @@ import { GitHubOrganization } from './git-hub-organization';
 })
 export class AppComponent implements OnInit {
 
-    gitHubOrganizations: string;
+    gitHubOrganizations: string = undefined;
 
     constructor( private gitHubOrganizationsService: GitHubOrganizationsService ) {
     }
 
     ngOnInit(): void {
+
         this.gitHubOrganizationsService
             .fetchOrganizations( 3 )
-            .then( organizations => this.gitHubOrganizations = JSON.stringify(organizations, undefined, 4));
+            .then( organizations => this.gitHubOrganizations = JSON.stringify( organizations, undefined, 4 ));
+
+        this.gitHubOrganizationsService
+            .fetchOrganizations( 3 )
+            .then( this.organizationsCallback );
+
+        this.gitHubOrganizationsService
+            .fetchOrganizations( 3, false )
+            .then( this.organizationsCallback )
+            .catch( error => console.error( '>>> Local error handling', JSON.stringify( error )));
+    }
+
+    private organizationsCallback( organizations: void | GitHubOrganization[] ): void {
+        // The input parameter organizations can be undefined if an error
+        // conditions was triggered
+        if ( organizations ) {
+            this.gitHubOrganizations = JSON.stringify( organizations, undefined, 4 );
+        }
     }
 }
