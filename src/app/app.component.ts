@@ -30,16 +30,16 @@ export class AppComponent implements OnInit {
         // Solution 2b: centralized error handling, fully-typed callback
         this.gitHubOrganizationsService
             .fetchOrganizations2( 3 )
-            .then( this.organizationsCallback );
+            .then( this.organizationsHandler );
 
-        // Solution 3: central error handling is disabled
+        // Solution 3: central error handling is disabled, fully-typed callback
         this.gitHubOrganizationsService
             .fetchOrganizations3( 3, false )
-            .then( this.organizationsCallback )
+            .then( this.organizationsHandler )
             .catch( error => console.error( '>>> Local error handling', JSON.stringify( error )));
     }
 
-    private organizationsCallback( organizations: void | GitHubOrganization[] ): void {
+    private organizationsHandler( organizations: void | GitHubOrganization[] ): void {
         // The input parameter organizations can be undefined if an error
         // conditions was triggered
         if ( organizations ) {
