@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
 
     ngOnInit(): void {
         this.gitHubOrganizationsService
-            .fetchOrganizations( 30 )
+            .fetchOrganizations( 15 )
             .then( organizations => {
                 if ( organizations ) { this.gitHubOrganizations = organizations; }
             });
