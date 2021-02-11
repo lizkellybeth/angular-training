@@ -2,17 +2,15 @@
     <table class="organizations-table">
         <thead>
         <tr>
-            <th>ID</th>
-            <th>Login</th>
-            <th>URL</th>
-            <th>Description</th>
+            <th>ID</th> <th>Login</th> <th>URL</th> <th>Avatar</th> <th>Description</th>
         </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let organization of organizations">
+            <tr [ngClass]="{'description-row': organization.description }" *ngFor="let organization of organizations">
                 <td> {{ organization.id }} </td>
                 <td> {{ organization.login }} </td>
-                <td> {{ organization.url }} </td>
+                <td> <a href="{{ organization.url }}">{{ organization.url }}</a> </td>
+                <td> <img src="{{ organization.avatar_url }}" width="20" height="20" alt="An icon"> </td>
                 <td> {{ organization.description }} </td>
             </tr>
         </tbody>
