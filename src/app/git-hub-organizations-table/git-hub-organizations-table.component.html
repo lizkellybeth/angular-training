@@ -1,0 +1,13 @@
+<div>
+    <table>
+        <thead></thead>
+        <tbody>
+            <tr *ngFor="let organization of organizations">
+                <td> {{ organization.id }} </td>
+                <td> {{ organization.login }} </td>
+                <td> {{ organization.url }} </td>
+                <td> {{ organization.description }} </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
