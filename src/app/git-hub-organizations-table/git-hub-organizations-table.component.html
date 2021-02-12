@@ -1,0 +1,20 @@
+<b>HI!</b> The following data comes from the parent via the 'organizations' variable here in the child component: 
+<br><br>
+
+<div>
+    <table class='organizations-table'>
+        <thead>
+            <tr>
+                <th>Icon</th><th>ID</th> <th>Login</th> <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let organization of organizations" [ngClass]="{'description-row': (organization.description) }">
+                <td><img class='orgIcon' src={{organization.avatar_url}}/></td>
+                <td> {{ organization.id }} </td>
+                <td><a href={{organization.url}}>{{ organization.login }}</a>  </td>
+                <td> {{ organization.description }} </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
